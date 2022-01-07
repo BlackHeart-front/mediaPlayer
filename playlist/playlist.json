@@ -1,0 +1,38 @@
+{
+    "vintageBeats": {
+        "cover": "cover_Vintage-Beats.webp",
+        "tracks": [{
+                "trackName": "boogie-time.mp3",
+                "trackArtist": "Doug Organ"
+            },
+            {
+                "trackName": "bright-life.mp3",
+                "trackArtist": "Jonny Boyle"
+            },
+            {
+                "trackName": "fugue-state.mp3",
+                "trackArtist": "Doug Organ"
+            },
+            {
+                "trackName": "gypsy-jaxx.mp3",
+                "trackArtist": "Jonny Boyle"
+            },
+            {
+                "trackName": "mr-mischief.mp3",
+                "trackArtist": "All Good Folks"
+            },
+            {
+                "trackName": "name.mp3",
+                "trackArtist": "Walz"
+            },
+            {
+                "trackName": "swing-it.mp3",
+                "trackArtist": "All Good Folks"
+            },
+            {
+                "trackName": "the-parade.mp3",
+                "trackArtist": "Hey Pluto"
+            }
+        ]
+    }
+}
