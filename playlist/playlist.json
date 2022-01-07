@@ -1,38 +1,45 @@
-{
-    "vintageBeats": {
-        "cover": "cover_Vintage-Beats.webp",
-        "tracks": [{
-                "trackName": "boogie-time.mp3",
-                "trackArtist": "Doug Organ"
-            },
-            {
-                "trackName": "bright-life.mp3",
-                "trackArtist": "Jonny Boyle"
-            },
-            {
-                "trackName": "fugue-state.mp3",
-                "trackArtist": "Doug Organ"
-            },
-            {
-                "trackName": "gypsy-jaxx.mp3",
-                "trackArtist": "Jonny Boyle"
-            },
-            {
-                "trackName": "mr-mischief.mp3",
-                "trackArtist": "All Good Folks"
-            },
-            {
-                "trackName": "name.mp3",
-                "trackArtist": "Walz"
-            },
-            {
-                "trackName": "swing-it.mp3",
-                "trackArtist": "All Good Folks"
-            },
-            {
-                "trackName": "the-parade.mp3",
-                "trackArtist": "Hey Pluto"
-            }
-        ]
-    }
-}
+[{
+    "name": "Vintage Beats",
+    "cover": "cover_Vintage-Beats.webp",
+    "tracks": [{
+            "trackName": "Boogie Time",
+            "trackArtist": "Doug Organ",
+            "path": "boogie-time.mp3"
+        },
+        {
+            "trackName": "Bright Life",
+            "trackArtist": "Jonny Boyle",
+            "path": "bright-life.mp3"
+        },
+        {
+            "trackName": "Fugue State",
+            "trackArtist": "Doug Organ",
+            "path": "fugue-state"
+        },
+        {
+            "trackName": "Gypsy Jaxx",
+            "trackArtist": "Jonny Boyle",
+            "path": "gypsy-jaxx"
+        },
+        {
+            "trackName": "Mr Mischief",
+            "trackArtist": "All Good Folks",
+            "path": "mr-mischief"
+        },
+        {
+            "trackName": "Name",
+            "trackArtist": "Walz",
+            "path": "name"
+        },
+        {
+            "trackName": "Swing It",
+            "trackArtist": "All Good Folks",
+            "path": "swing-it"
+        },
+        {
+            "trackName": "The Parade",
+            "trackArtist": "Hey Pluto",
+            "path": "the-parade"
+        }
+    ]
+}]

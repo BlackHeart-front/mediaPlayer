@@ -5,22 +5,41 @@
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <!-- base => SOMENTE DEV LOCAL -->
     <base href='http://localhost:5500/'>
     <title>Media Player</title>
 </head>
 
-<body>
-    <h1>Media Player</h1>
-    <!--TODO-->
-    <!-- Dados:
-        * Capa
-        * Nome do álbum ou playlist
-        * Artista
-        * Faixa
-            * Index
-            * Nome
-            * Duração
-    -->
+<body style="background-color: #2e2e2e;">
+    <main id='mediaPlayer'>
+        <header id='playlist-banner'>
+            <h1 id='playlist-name'>Playlist Name</h1>
+            <p id='playlist-details'><span>0</span>&nbsp;Músicas</p>
+        </header>
+
+        <section id='playlist-container'>
+            <!-- <ul id='playlist-tracks'>
+                <li class='track'>lorem ipsum</li>
+            </ul> -->
+        </section>
+
+        <footer id='mediaPlayer-controls'>
+            <div id='actualTrack-details'>
+                <p id='track-playingNow'>lorem ipsum</p>
+                <p id='track-artist'>Dolor amet</p>
+            </div>
+            <div id='seeker'>
+                <p id='track-currentTime'>00:00</p>
+                <input type='range' id='track-seekerSlider' min="0" max="100" value="1">
+                <p id='track-duration'>00:00</p>
+            </div>
+            <div id='buttons'>
+                <button type="button" id='btn-prev'><span class='only-screenReader'>ir para faixa anterior</span></button>
+                <button type="button" id='btn-play'><span class='only-screenReader'>play</span></button>
+                <button type="button" id='btn-next'><span class='only-screenReader'>ir para a próxima faixa</span></button>
+            </div>
+        </footer>
+    </main>
 
 
     <script src='scripts/mediaPlayer.js'></script>
