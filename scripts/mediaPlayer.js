@@ -79,18 +79,46 @@ function loadPlaylistData(data) {
 
 // DATA: Carregar informações da faixa em execução
 let playingNow = function() {
+    let updateTime = null;
+
     trackPlayingNow.innerText = playlistData[0].tracks[actualTrack].trackName;
     trackArtist.innerText = playlistData[0].tracks[actualTrack].trackArtist;
 
+    let timeData = function() {
+        let trackDurationMinutes = Math.floor(mediaPlayer.duration / 60),
+            trackDurationSeconds = Math.floor(mediaPlayer.duration - trackDurationMinutes * 60),
+            trackCurrentMinutes = Math.floor(mediaPlayer.currentTime / 60),
+            trackCurrentSeconds = Math.floor(mediaPlayer.currentTime - trackCurrentMinutes * 60);
+
+        if (trackDurationMinutes < 10) { trackDurationMinutes = `0${trackDurationMinutes}` }
+        if (trackDurationSeconds < 10) { trackDurationSeconds = `0${trackDurationSeconds}` }
+        if (trackCurrentMinutes < 10) { trackCurrentMinutes = `0${trackCurrentMinutes}` }
+        if (trackCurrentSeconds < 10) { trackCurrentSeconds = `0${trackCurrentSeconds}` }
+
+        trackDuration.innerText = `${trackDurationMinutes}:${trackDurationSeconds}`;
+        trackCurrentTime.innerText = `${trackCurrentMinutes}:${trackCurrentSeconds}`;
+        console.log(trackCurrentTime);
+    }
+
+    // mostrar informações de tempo da faixa carregada
     if (isPlaying) {
-        setTimeout(() => {
-            trackDuration.innerText = mediaPlayer.duration;
-            trackCurrentTime.innerText = mediaPlayer.currentTime;
-        }, 100);
+        updateTime = setInterval(() => { timeData(); }, 100);
+
+        mediaPlayer.addEventListener('ended', () => {
+            clearInterval(updateTime);
+
+            isPlaying = false;
+            btnPlay.setAttribute('class', 'btn-play')
+            btnPlay.firstChild.innerText = 'play';
+
+        });
     } else {
         trackDuration.innerText = '00:00';
         trackCurrentTime.innerText = '00:00';
     }
+
+    // stop => updateTime
+    btnPlay.addEventListener('click', () => clearInterval(updateTime));
 }
 
 /*======================================================
