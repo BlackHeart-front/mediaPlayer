@@ -12,7 +12,7 @@ const
     trackSeekerSlider = document.querySelector('#track-seekerSlider'),
     trackDuration = document.querySelector('#track-duration'),
     btnPrev = document.querySelector('#btn-prev'),
-    btnPlay = document.querySelector('#btn-play'),
+    btnPlay = document.querySelector('#btn-play-pause'),
     btnNext = document.querySelector('#btn-next');
 
 // BTN: Status default
@@ -89,22 +89,19 @@ function loadFirstTrack(data) {
     MEDIA PLAYER: AÇÕES
 ======================================================*/
 //Ação: play()
-btnPlay.addEventListener('click', play);
+btnPlay.addEventListener('click', play_pause);
 
-function play() {
+function play_pause() {
     if (mediaPlayer.src && mediaPlayer.readyState === 4 && !isPlaying && btnPlay.getAttribute('disabled') === null) {
         mediaPlayer.play();
         isPlaying = true;
-    }
-}
-
-//Ação: pause()
-// btnPause.addEventListener('click', pause);
-
-function pause() {
-    if (isPlaying) {
+        this.setAttribute('class', 'btn-pause');
+        this.firstChild.innerText = 'pause';
+    } else if (isPlaying) {
         mediaPlayer.pause();
         isPlaying = false;
+        this.setAttribute('class', 'btn-play')
+        this.firstChild.innerText = 'play';
     }
 }
 
