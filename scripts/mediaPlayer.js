@@ -105,21 +105,19 @@ let play_pause = function() {
         this.setAttribute('class', 'btn-play')
         this.firstChild.innerText = 'play';
     }
-    // checkNext();
-    // checkPrevious();
 }
 btnPlay.addEventListener('click', play_pause);
 
 
 //Ação: nextTrack()
 let nextTrack = function() {
-    let goNextTrack = ++actualTrack;
+    ++actualTrack;
 
     checkNext();
     checkPrevious();
 
-    if (goNextTrack <= playlistData[0].tracks.length) {
-        mediaPlayer.src = playlistData[0].tracks[goNextTrack].path;
+    if (actualTrack < playlistData[0].tracks.length) {
+        mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
     } else {
         console.log(`fim da playlist ${playlistData[0].name}`);
     }
@@ -129,6 +127,24 @@ let nextTrack = function() {
     }
 }
 btnNext.addEventListener('click', nextTrack);
+//Ação: previousTrack()
+let previousTrack = function() {
+    --actualTrack;
+
+    checkNext();
+    checkPrevious();
+
+    if (actualTrack <= playlistData[0].tracks.length) {
+        mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
+    } else {
+        console.log(`fim da playlist ${playlistData[0].name}`);
+    }
+
+    if (isPlaying) {
+        mediaPlayer.play();
+    }
+}
+btnPrev.addEventListener('click', previousTrack);
 
 
 //Ação: goTo(time in sec)
@@ -154,7 +170,7 @@ let changeStateBtn = function(btn, state) {
 }
 
 let checkNext = function() {
-    if (actualTrack < playlistData[0].tracks.length) {
+    if (actualTrack < (playlistData[0].tracks.length - 1)) {
         changeStateBtn(btnNext, 'enabled');
     } else {
         changeStateBtn(btnNext, 'disabled');
