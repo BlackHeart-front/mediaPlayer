@@ -14,32 +14,32 @@
         {
             "trackName": "Fugue State",
             "trackArtist": "Doug Organ",
-            "path": "playlist/vintageBeats/fugue-state"
+            "path": "playlist/vintageBeats/fugue-state.mp3"
         },
         {
             "trackName": "Gypsy Jaxx",
             "trackArtist": "Jonny Boyle",
-            "path": "playlist/vintageBeats/gypsy-jaxx"
+            "path": "playlist/vintageBeats/gypsy-jaxx.mp3"
         },
         {
             "trackName": "Mr Mischief",
             "trackArtist": "All Good Folks",
-            "path": "playlist/vintageBeats/mr-mischief"
+            "path": "playlist/vintageBeats/mr-mischief.mp3"
         },
         {
             "trackName": "Name",
             "trackArtist": "Walz",
-            "path": "playlist/vintageBeats/name"
+            "path": "playlist/vintageBeats/name.mp3"
         },
         {
             "trackName": "Swing It",
             "trackArtist": "All Good Folks",
-            "path": "playlist/vintageBeats/swing-it"
+            "path": "playlist/vintageBeats/swing-it.mp3"
         },
         {
             "trackName": "The Parade",
             "trackArtist": "Hey Pluto",
-            "path": "playlist/vintageBeats/the-parade"
+            "path": "playlist/vintageBeats/the-parade.mp3"
         }
     ]
 }]

@@ -92,10 +92,8 @@ function loadFirstTrack(data) {
 /*======================================================
     MEDIA PLAYER: AÇÕES
 ======================================================*/
-//Ação: play()
-btnPlay.addEventListener('click', play_pause);
-
-function play_pause() {
+//Ação: play_pause(
+let play_pause = function() {
     if (mediaPlayer.src && mediaPlayer.readyState === 4 && !isPlaying && btnPlay.getAttribute('disabled') === null) {
         mediaPlayer.play();
         isPlaying = true;
@@ -107,11 +105,31 @@ function play_pause() {
         this.setAttribute('class', 'btn-play')
         this.firstChild.innerText = 'play';
     }
-    checkNext();
-    checkPrevious();
+    // checkNext();
+    // checkPrevious();
 }
+btnPlay.addEventListener('click', play_pause);
+
 
 //Ação: nextTrack()
+let nextTrack = function() {
+    let goNextTrack = ++actualTrack;
+
+    checkNext();
+    checkPrevious();
+
+    if (goNextTrack <= playlistData[0].tracks.length) {
+        mediaPlayer.src = playlistData[0].tracks[goNextTrack].path;
+    } else {
+        console.log(`fim da playlist ${playlistData[0].name}`);
+    }
+
+    if (isPlaying) {
+        mediaPlayer.play();
+    }
+}
+btnNext.addEventListener('click', nextTrack);
+
 
 //Ação: goTo(time in sec)
 function goTo(time) {
@@ -136,10 +154,10 @@ let changeStateBtn = function(btn, state) {
 }
 
 let checkNext = function() {
-    if (actualTrack === playlistData[0].tracks.length) {
-        changeStateBtn(btnNext, 'disabled');
-    } else {
+    if (actualTrack < playlistData[0].tracks.length) {
         changeStateBtn(btnNext, 'enabled');
+    } else {
+        changeStateBtn(btnNext, 'disabled');
     }
 }
 
