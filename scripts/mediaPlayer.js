@@ -77,13 +77,28 @@ function loadPlaylistData(data) {
     })();
 }
 
+// DATA: Carregar informações da faixa em execução
+let playingNow = function() {
+    trackPlayingNow.innerText = playlistData[0].tracks[actualTrack].trackName;
+    trackArtist.innerText = playlistData[0].tracks[actualTrack].trackArtist;
+
+    if (isPlaying) {
+        setTimeout(() => {
+            trackDuration.innerText = mediaPlayer.duration;
+            trackCurrentTime.innerText = mediaPlayer.currentTime;
+        }, 100);
+    } else {
+        trackDuration.innerText = '00:00';
+        trackCurrentTime.innerText = '00:00';
+    }
+}
+
 /*======================================================
     MEDIA PLAYER: CARREGAR FAIXA
 ======================================================*/
 function loadFirstTrack(data) {
     if (actualTrack === 0 && !isPlaying) {
         mediaPlayer.src = data[0].tracks[0].path;
-        console.log('Primeira faixa carregada!');
     } else {
         console.log(`Erro ao carregar a primeira faixa!`);
     }
@@ -99,6 +114,7 @@ let play_pause = function() {
         isPlaying = true;
         this.setAttribute('class', 'btn-pause');
         this.firstChild.innerText = 'pause';
+        playingNow();
     } else if (isPlaying) {
         mediaPlayer.pause();
         isPlaying = false;
@@ -118,6 +134,8 @@ let nextTrack = function() {
 
     if (actualTrack < playlistData[0].tracks.length) {
         mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
+        playingNow();
+
     } else {
         console.log(`fim da playlist ${playlistData[0].name}`);
     }
@@ -127,6 +145,7 @@ let nextTrack = function() {
     }
 }
 btnNext.addEventListener('click', nextTrack);
+
 //Ação: previousTrack()
 let previousTrack = function() {
     --actualTrack;
@@ -136,6 +155,7 @@ let previousTrack = function() {
 
     if (actualTrack <= playlistData[0].tracks.length) {
         mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
+        playingNow();
     } else {
         console.log(`fim da playlist ${playlistData[0].name}`);
     }
