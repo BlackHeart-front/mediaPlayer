@@ -24,7 +24,7 @@ btnNext.setAttribute('disabled', 'disabled');
     MEDIA PLAYER: GLOBAIS
 ======================================================*/
 let playlistData = null, //only dev
-    actualTrack = 0,
+    actualTrack = null,
     isPlaying = false;
 
 //Elemento de áudio para o Player de música
@@ -40,10 +40,14 @@ let mediaPlayer = document.createElement('audio');
 
     if (response.status === 200) {
         let json = await response.json();
+
         playlistData = json; //only dev
+        actualTrack = 0;
+
         loadPlaylistData(json);
         loadFirstTrack(json);
-        changeStateBtn(btnPlay, 'enable');
+        changeStateBtn(btnPlay, 'enabled');
+        checkNext();
     } else {
         console.log(`HTTP-Error: ${response.status}`);
     }
@@ -103,19 +107,11 @@ function play_pause() {
         this.setAttribute('class', 'btn-play')
         this.firstChild.innerText = 'play';
     }
+    checkNext();
+    checkPrevious();
 }
 
-//Ação: stop()
-// btnStop.addEventListener('click', stop);
-
-function stop() {
-    if (isPlaying) {
-        pause();
-        goTo(0);
-    } else if (mediaPlayer.paused) {
-        goTo(0);
-    }
-}
+//Ação: nextTrack()
 
 //Ação: goTo(time in sec)
 function goTo(time) {
@@ -125,16 +121,32 @@ function goTo(time) {
 /*======================================================
     MEDIA PLAYER: VERIFICAÇÕES
 ======================================================*/
-function changeStateBtn(btn, state) {
+let changeStateBtn = function(btn, state) {
     switch (state) {
-        case 'enable':
+        case 'enabled':
             btn.removeAttribute('disabled');
             break;
-        case 'disable':
+        case 'disabled':
             btn.setAttribute('disabled', 'disabled');
             break;
         default:
             console.log('Error!');
             break;
+    }
+}
+
+let checkNext = function() {
+    if (actualTrack === playlistData[0].tracks.length) {
+        changeStateBtn(btnNext, 'disabled');
+    } else {
+        changeStateBtn(btnNext, 'enabled');
+    }
+}
+
+let checkPrevious = function() {
+    if (actualTrack != 0) {
+        changeStateBtn(btnPrev, 'enabled');
+    } else {
+        changeStateBtn(btnPrev, 'disabled');
     }
 }
