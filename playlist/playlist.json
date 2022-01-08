@@ -1,45 +1,45 @@
 [{
     "name": "Vintage Beats",
-    "cover": "cover_Vintage-Beats.webp",
+    "cover": "https://picsum.photos/id/1071/800/400",
     "tracks": [{
             "trackName": "Boogie Time",
             "trackArtist": "Doug Organ",
-            "path": "boogie-time.mp3"
+            "path": "playlist/vintageBeats/boogie-time.mp3"
         },
         {
             "trackName": "Bright Life",
             "trackArtist": "Jonny Boyle",
-            "path": "bright-life.mp3"
+            "path": "playlist/vintageBeats/bright-life.mp3"
         },
         {
             "trackName": "Fugue State",
             "trackArtist": "Doug Organ",
-            "path": "fugue-state"
+            "path": "playlist/vintageBeats/fugue-state"
         },
         {
             "trackName": "Gypsy Jaxx",
             "trackArtist": "Jonny Boyle",
-            "path": "gypsy-jaxx"
+            "path": "playlist/vintageBeats/gypsy-jaxx"
         },
         {
             "trackName": "Mr Mischief",
             "trackArtist": "All Good Folks",
-            "path": "mr-mischief"
+            "path": "playlist/vintageBeats/mr-mischief"
         },
         {
             "trackName": "Name",
             "trackArtist": "Walz",
-            "path": "name"
+            "path": "playlist/vintageBeats/name"
         },
         {
             "trackName": "Swing It",
             "trackArtist": "All Good Folks",
-            "path": "swing-it"
+            "path": "playlist/vintageBeats/swing-it"
         },
         {
             "trackName": "The Parade",
             "trackArtist": "Hey Pluto",
-            "path": "the-parade"
+            "path": "playlist/vintageBeats/the-parade"
         }
     ]
 }]

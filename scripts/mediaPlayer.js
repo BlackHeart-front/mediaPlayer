@@ -2,31 +2,36 @@
     MEDIA PLAYER: ELEMENTOS DA UI
 ======================================================*/
 const
-    playlistBanner = document.getElementById('playlist-banner'),
-    playlistName = document.getElementById('playlist-name'),
-    playlistDetails = document.getElementById('playlist-details'),
-    playlistContainer = document.getElementById('playlist-container'),
-    trackPlayingNow = document.getElementById('track-playingNow'),
-    trackArtist = document.getElementById('track-artist'),
-    trackCurrentTime = document.getElementById('track-currentTime'),
-    trackSeekerSlider = document.getElementById('track-seekerSlider'),
-    trackDuration = document.getElementById('track-duration'),
-    btnPrev = document.getElementById('btn-prev'),
-    btnPlay = document.getElementById('btn-play'),
-    btnNext = document.getElementById('btn-next');
+    playlistBanner = document.querySelector('#playlist-banner'),
+    playlistName = document.querySelector('#playlist-name'),
+    playlistDetails = document.querySelector('#playlist-details'),
+    playlistContainer = document.querySelector('#playlist-container'),
+    trackPlayingNow = document.querySelector('#track-playingNow'),
+    trackArtist = document.querySelector('#track-artist'),
+    trackCurrentTime = document.querySelector('#track-currentTime'),
+    trackSeekerSlider = document.querySelector('#track-seekerSlider'),
+    trackDuration = document.querySelector('#track-duration'),
+    btnPrev = document.querySelector('#btn-prev'),
+    btnPlay = document.querySelector('#btn-play'),
+    btnNext = document.querySelector('#btn-next');
+
+// BTN: Status default
+btnPrev.setAttribute('disabled', 'disabled');
+btnPlay.setAttribute('disabled', 'disabled');
+btnNext.setAttribute('disabled', 'disabled');
 
 /*======================================================
     MEDIA PLAYER: GLOBAIS
 ======================================================*/
-let playlist = null,
+let playlistData = null, //only dev
     actualTrack = 0,
     isPlaying = false;
 
 //Elemento de áudio para o Player de música
-let audioElement = document.createElement('audio');
+let mediaPlayer = document.createElement('audio');
 
 /*======================================================
-    MEDIA PLAYER: DATA
+    MEDIA PLAYER: PEGAR DADOS E POPULAR FRONT
     TODO: call in click event
 ======================================================*/
 //DATA: Pega os dados da playlist à executar
@@ -35,8 +40,10 @@ let audioElement = document.createElement('audio');
 
     if (response.status === 200) {
         let json = await response.json();
-        playlist = json;
+        playlistData = json; //only dev
         loadPlaylistData(json);
+        loadFirstTrack(json);
+        changeStateBtn(btnPlay, 'enable');
     } else {
         console.log(`HTTP-Error: ${response.status}`);
     }
@@ -44,67 +51,93 @@ let audioElement = document.createElement('audio');
 
 //DATA: Carregar dados da playlist no front
 function loadPlaylistData(data) {
-    let trackList = document.createElement('UL'),
-        trackListItem = document.createElement('LI');
+    let trackList = document.createElement('DL');
 
     trackList.setAttribute('id', 'trackList');
-
     playlistContainer.appendChild(trackList);
 
+    (function() {
+        playlistName.innerText = data[0].name;
+        playlistBanner.style.backgroundImage = `url(${data[0].cover})`;
+        playlistDetails.innerText = `${data[0].tracks.length} músicas`;
 
-    let populateTracks = function(item) {
-        playlistName.innerText = item.name;
-        playlistBanner.style.backgroundImage = `url("/playlist/${item.name}/cover/${item.cover}")`;
-        // console.log(item);
-        // console.log(item.tracks);
-
-        for (let i = 0; i < item.tracks.length; i++) {
-            console.log(i + item.tracks[i].trackName)
+        for (let i = 0; i < data[0].tracks.length; i++) {
             if (trackList.childElementCount === 0) {
-                trackList.appendChild(trackListItem);
+                trackList
+                    .insertAdjacentHTML('beforeend', `<dt>${i + 1}</dt><dd><p>${data[0].tracks[0].trackName}</p><p>${data[0].tracks[0].trackArtist}</p></dd>`);
             } else {
-                let trackListElement = document.getElementById('trackList');
-                console.log(trackListElement);
-                // TODO: adicionar li dentro da ul com nome das faixas
+                trackList
+                    .insertAdjacentHTML('beforeend', `<dt>${i + 1}</dt><dd><p>${data[0].tracks[i].trackName}</p><p>${data[0].tracks[i].trackArtist}</p></dd>`);
             }
         }
+    })();
+}
 
+/*======================================================
+    MEDIA PLAYER: CARREGAR FAIXA
+======================================================*/
+function loadFirstTrack(data) {
+    if (actualTrack === 0 && !isPlaying) {
+        mediaPlayer.src = data[0].tracks[0].path;
+        console.log('Primeira faixa carregada!');
+    } else {
+        console.log(`Erro ao carregar a primeira faixa!`);
     }
-
-    data.forEach(populateTracks);
 }
 
 /*======================================================
     MEDIA PLAYER: AÇÕES
 ======================================================*/
 //Ação: play()
+btnPlay.addEventListener('click', play);
+
 function play() {
-    if (audioElement.src && audioElement.readyState === 4) {
-        audioElement.play();
-    } else {
-        audioElement.src = playlist;
-        audioElement.play();
+    if (mediaPlayer.src && mediaPlayer.readyState === 4 && !isPlaying && btnPlay.getAttribute('disabled') === null) {
+        mediaPlayer.play();
+        isPlaying = true;
     }
 }
 
 //Ação: pause()
+// btnPause.addEventListener('click', pause);
+
 function pause() {
-    if (audioElement.play) {
-        audioElement.pause();
+    if (isPlaying) {
+        mediaPlayer.pause();
+        isPlaying = false;
     }
 }
 
 //Ação: stop()
+// btnStop.addEventListener('click', stop);
+
 function stop() {
-    if (audioElement.play) {
+    if (isPlaying) {
         pause();
         goTo(0);
-    } else if (audioElement.paused) {
+    } else if (mediaPlayer.paused) {
         goTo(0);
     }
 }
 
 //Ação: goTo(time in sec)
 function goTo(time) {
-    audioElement.currentTime = time;
+    mediaPlayer.currentTime = time;
+}
+
+/*======================================================
+    MEDIA PLAYER: VERIFICAÇÕES
+======================================================*/
+function changeStateBtn(btn, state) {
+    switch (state) {
+        case 'enable':
+            btn.removeAttribute('disabled');
+            break;
+        case 'disable':
+            btn.setAttribute('disabled', 'disabled');
+            break;
+        default:
+            console.log('Error!');
+            break;
+    }
 }
