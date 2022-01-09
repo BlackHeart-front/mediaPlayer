@@ -1,3 +1,5 @@
+console.clear();
+
 /*======================================================
     MEDIA PLAYER: ELEMENTOS DA UI
 ======================================================*/
@@ -25,11 +27,10 @@ btnNext.setAttribute('disabled', 'disabled');
 ======================================================*/
 let playlistData = null, //only dev
     actualTrack = null,
-    isPlaying = false;
+    isPlaying = false,
 
-
-//Elemento de áudio para o Player de música
-let mediaPlayer = document.createElement('audio');
+    //Elemento de áudio para o Player de música
+    mediaPlayer = document.createElement('AUDIO');
 
 /*======================================================
     MEDIA PLAYER: PEGAR DADOS E POPULAR FRONT
@@ -55,7 +56,7 @@ let mediaPlayer = document.createElement('audio');
 })('http://localhost:5500/playlist/playlist.json');
 
 //DATA: Carregar dados da playlist no front
-function loadPlaylistData(data) {
+let loadPlaylistData = data => {
     let trackList = document.createElement('DL');
 
     trackList.setAttribute('id', 'trackList');
@@ -79,14 +80,14 @@ function loadPlaylistData(data) {
 }
 
 // DATA: Carregar informações da faixa em execução
-let playingNow = function() {
+let playingNow = () => {
     let updateTime = null,
         updateSeeker = null;
 
     trackPlayingNow.innerText = playlistData[0].tracks[actualTrack].trackName;
     trackArtist.innerText = playlistData[0].tracks[actualTrack].trackArtist;
 
-    let timeData = function() {
+    let timeData = () => {
         let trackDurationMinutes = Math.floor(mediaPlayer.duration / 60),
             trackDurationSeconds = Math.floor(mediaPlayer.duration - trackDurationMinutes * 60),
             trackCurrentMinutes = Math.floor(mediaPlayer.currentTime / 60),
@@ -101,7 +102,7 @@ let playingNow = function() {
         trackCurrentTime.innerText = `${trackCurrentMinutes}:${trackCurrentSeconds}`;
     }
 
-    let seekSliderMove = function() {
+    let seekSliderMove = () => {
         trackSeekerSlider.stepUp(1);
     }
 
@@ -133,7 +134,7 @@ let playingNow = function() {
 /*======================================================
     MEDIA PLAYER: CARREGAR FAIXA
 ======================================================*/
-function loadFirstTrack(data) {
+let loadFirstTrack = data => {
     if (actualTrack === 0 && !isPlaying) {
         mediaPlayer.src = data[0].tracks[0].path;
     } else {
@@ -145,7 +146,7 @@ function loadFirstTrack(data) {
     MEDIA PLAYER: SEEK SLIDER
 ======================================================*/
 //Ação: busca interativa na faixa
-let seekSlider = function() {
+let seekSlider = () => {
     let seekValue = trackSeekerSlider.value;
 
     if (mediaPlayer.src && mediaPlayer.readyState === 4) {
@@ -159,25 +160,25 @@ trackSeekerSlider.addEventListener('change', seekSlider);
     MEDIA PLAYER: AÇÕES
 ======================================================*/
 //Ação: executar ou pausar faixa
-let play_pause = function() {
+let play_pause = () => {
     if (mediaPlayer.src && mediaPlayer.readyState === 4 && !isPlaying && btnPlay.getAttribute('disabled') === null) {
         mediaPlayer.play();
         isPlaying = true;
-        this.setAttribute('class', 'btn-pause');
-        this.firstChild.innerText = 'pause';
+        btnPlay.setAttribute('class', 'btn-pause');
+        btnPlay.firstChild.innerText = 'pause';
         playingNow();
     } else if (isPlaying) {
         mediaPlayer.pause();
         isPlaying = false;
-        this.setAttribute('class', 'btn-play')
-        this.firstChild.innerText = 'play';
+        btnPlay.setAttribute('class', 'btn-play')
+        btnPlay.firstChild.innerText = 'play';
     }
 }
 btnPlay.addEventListener('click', play_pause);
 
 
 //Ação: avançar faixa
-let nextTrack = function() {
+let nextTrack = () => {
     ++actualTrack;
 
     checkNext();
@@ -199,7 +200,7 @@ let nextTrack = function() {
 btnNext.addEventListener('click', nextTrack);
 
 //Ação: retroceder faixa
-let previousTrack = function() {
+let previousTrack = () => {
     --actualTrack;
 
     checkNext();
@@ -222,7 +223,7 @@ btnPrev.addEventListener('click', previousTrack);
 /*======================================================
     MEDIA PLAYER: VERIFICAÇÕES
 ======================================================*/
-let changeStateBtn = function(btn, state) {
+let changeStateBtn = (btn, state) => {
     switch (state) {
         case 'enabled':
             btn.removeAttribute('disabled');
@@ -236,7 +237,7 @@ let changeStateBtn = function(btn, state) {
     }
 }
 
-let checkNext = function() {
+let checkNext = () => {
     if (actualTrack < (playlistData[0].tracks.length - 1)) {
         changeStateBtn(btnNext, 'enabled');
     } else {
@@ -244,7 +245,7 @@ let checkNext = function() {
     }
 }
 
-let checkPrevious = function() {
+let checkPrevious = () => {
     if (actualTrack != 0) {
         changeStateBtn(btnPrev, 'enabled');
     } else {
@@ -255,6 +256,6 @@ let checkPrevious = function() {
 /*======================================================
     MEDIA PLAYER: RESET
 ======================================================*/
-let seekerSliderReset = function() {
+let seekerSliderReset = () => {
     trackSeekerSlider.value = 0;
 }
