@@ -7,40 +7,49 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <!-- base => SOMENTE DEV LOCAL -->
     <base href='http://localhost:5500/'>
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- FONT AWESOME -->
+    <script src="https://kit.fontawesome.com/641834ada7.js" crossorigin="anonymous"></script>
     <!-- STYLES -->
     <link rel='stylesheet' href='styles/normalize.css'>
+    <link rel='stylesheet' href='styles/main.css'>
     <title>Media Player</title>
 </head>
 
 <body>
-    <main id='mediaPlayer'>
-        <header id='playlist-banner'>
-            <h1 id='playlist-name'></h1>
-            <p id='playlist-details'></p>
+    <main id='mediaPlayer' class="margin-0 width-full boxSizing-borderBox">
+        <header id='playlist-banner' class="margin-0 width-full boxSizing-borderBox padding-base">
+            <h1 id='playlist-name' class="margin-0"></h1>
+            <p id='playlist-details' class="margin-0"></p>
         </header>
 
-        <section id='playlist-container'></section>
+        <section id='playlist-container' class="margin-0 width-full boxSizing-borderBox padding-base">
+            <div id='playlist-container-bg'></div>
+        </section>
 
-        <footer id='mediaPlayer-controls'>
+        <footer id='mediaPlayer-controls' class="margin-0 width-full boxSizing-borderBox padding-base">
             <div id='actualTrack-details'>
-                <p>Tocando agora:</p>
+                <p>Tocando agora</p>
                 <p id='track-playingNow'></p>
                 <p id='track-artist'></p>
             </div>
-            <div id='seeker'>
-                <p id='track-currentTime'></p>
-                <input type='range' id='track-seekerSlider' min="0" max="100" value="1">
-                <p id='track-duration'></p>
-            </div>
             <div id='buttons'>
-                <button type="button" id='btn-prev'><span class='only-screenReader'>ir para faixa anterior</span></button>
-                <button type="button" id='btn-play-pause' class="btn-play"><span class='only-screenReader'>play</span></button>
-                <button type="button" id='btn-next'><span class='only-screenReader'>ir para a próxima faixa</span></button>
+                <button type="button" id='btn-prev' class="btn icon lg black icon-prev no-bg"><span class='only-screenReader'>ir para faixa anterior</span></button>
+                <button type="button" id='btn-play-pause' class="btn primary circle icon lg white icon-play"><span class='only-screenReader'>play</span></button>
+                <button type="button" id='btn-next' class="btn icon lg black icon-next no-bg"><span class='only-screenReader'>ir para a próxima faixa</span></button>
+            </div>
+            <div id='seeker'>
+                <p id='track-currentTime' class="padding-right-sm"></p>
+                <input type='range' id='track-seekerSlider' min="0" max="100" value="0">
+                <p id='track-duration' class="padding-left-sm"></p>
             </div>
         </footer>
     </main>
 
-
+    <!-- SCRIPTS -->
     <script src='scripts/mediaPlayer.js'></script>
 </body>
 

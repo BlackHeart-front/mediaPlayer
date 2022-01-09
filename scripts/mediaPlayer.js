@@ -8,6 +8,7 @@ const
     playlistName = document.querySelector('#playlist-name'),
     playlistDetails = document.querySelector('#playlist-details'),
     playlistContainer = document.querySelector('#playlist-container'),
+    playlistContainerBg = document.querySelector('#playlist-container-bg'),
     trackPlayingNow = document.querySelector('#track-playingNow'),
     trackArtist = document.querySelector('#track-artist'),
     trackCurrentTime = document.querySelector('#track-currentTime'),
@@ -57,7 +58,7 @@ let playlistData = null, //only dev
 
 //DATA: Carregar dados da playlist no front
 let loadPlaylistData = data => {
-    let trackList = document.createElement('DL');
+    let trackList = document.createElement('UL');
 
     trackList.setAttribute('id', 'trackList');
     playlistContainer.appendChild(trackList);
@@ -65,15 +66,15 @@ let loadPlaylistData = data => {
     (function() {
         playlistName.innerText = data[0].name;
         playlistBanner.style.backgroundImage = `url(${data[0].cover})`;
-        playlistDetails.innerText = `${data[0].tracks.length} músicas`;
+        playlistDetails.innerHTML = `<i class="fas fa-music margin-right-sm"></i> ${data[0].tracks.length} músicas`;
 
         for (let i = 0; i < data[0].tracks.length; i++) {
             if (trackList.childElementCount === 0) {
                 trackList
-                    .insertAdjacentHTML('beforeend', `<dt>${i + 1}</dt><dd><p>${data[0].tracks[0].trackName}</p><p>${data[0].tracks[0].trackArtist}</p></dd>`);
+                    .insertAdjacentHTML('beforeend', `<li><p>${i + 1}</p><div><p>${data[0].tracks[0].trackName}</p><p>${data[0].tracks[0].trackArtist}</p></div></li>`);
             } else {
                 trackList
-                    .insertAdjacentHTML('beforeend', `<dt>${i + 1}</dt><dd><p>${data[0].tracks[i].trackName}</p><p>${data[0].tracks[i].trackArtist}</p></dd>`);
+                    .insertAdjacentHTML('beforeend', `<li><p>${i + 1}</p><div><p>${data[0].tracks[i].trackName}</p><p>${data[0].tracks[i].trackArtist}</p></div></li>`);
             }
         }
     })();
@@ -103,6 +104,7 @@ let playingNow = () => {
     }
 
     let seekSliderMove = () => {
+        trackSeekerSlider.max = mediaPlayer.duration;
         trackSeekerSlider.stepUp(1);
     }
 
@@ -113,9 +115,11 @@ let playingNow = () => {
 
         mediaPlayer.addEventListener('ended', () => {
             clearInterval(updateTime);
+            clearInterval(updateSeeker);
 
             isPlaying = false;
-            btnPlay.setAttribute('class', 'btn-play')
+            btnPlay.classList.remove('icon-pause');
+            btnPlay.classList.add('icon-play')
             btnPlay.firstChild.innerText = 'play';
 
         });
@@ -127,7 +131,15 @@ let playingNow = () => {
     // stop => updateTime
     btnPlay.addEventListener('click', () => {
         clearInterval(updateTime);
-        clearInterval(updateSeeker)
+        clearInterval(updateSeeker);
+    });
+    btnPrev.addEventListener('click', () => {
+        clearInterval(updateTime);
+        clearInterval(updateSeeker);
+    });
+    btnNext.addEventListener('click', () => {
+        clearInterval(updateTime);
+        clearInterval(updateSeeker);
     });
 }
 
@@ -164,13 +176,15 @@ let play_pause = () => {
     if (mediaPlayer.src && mediaPlayer.readyState === 4 && !isPlaying && btnPlay.getAttribute('disabled') === null) {
         mediaPlayer.play();
         isPlaying = true;
-        btnPlay.setAttribute('class', 'btn-pause');
+        btnPlay.classList.remove('icon-play');
+        btnPlay.classList.add('icon-pause');
         btnPlay.firstChild.innerText = 'pause';
         playingNow();
     } else if (isPlaying) {
         mediaPlayer.pause();
         isPlaying = false;
-        btnPlay.setAttribute('class', 'btn-play')
+        btnPlay.classList.remove('icon-pause');
+        btnPlay.classList.add('icon-play')
         btnPlay.firstChild.innerText = 'play';
     }
 }
@@ -258,4 +272,5 @@ let checkPrevious = () => {
 ======================================================*/
 let seekerSliderReset = () => {
     trackSeekerSlider.value = 0;
+    trackSeekerSlider.max = 0;
 }
