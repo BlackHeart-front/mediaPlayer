@@ -27,6 +27,7 @@ let playlistData = null, //only dev
     actualTrack = null,
     isPlaying = false;
 
+
 //Elemento de áudio para o Player de música
 let mediaPlayer = document.createElement('audio');
 
@@ -79,7 +80,8 @@ function loadPlaylistData(data) {
 
 // DATA: Carregar informações da faixa em execução
 let playingNow = function() {
-    let updateTime = null;
+    let updateTime = null,
+        updateSeeker = null;
 
     trackPlayingNow.innerText = playlistData[0].tracks[actualTrack].trackName;
     trackArtist.innerText = playlistData[0].tracks[actualTrack].trackArtist;
@@ -97,12 +99,16 @@ let playingNow = function() {
 
         trackDuration.innerText = `${trackDurationMinutes}:${trackDurationSeconds}`;
         trackCurrentTime.innerText = `${trackCurrentMinutes}:${trackCurrentSeconds}`;
-        console.log(trackCurrentTime);
+    }
+
+    let seekSliderMove = function() {
+        trackSeekerSlider.stepUp(1);
     }
 
     // mostrar informações de tempo da faixa carregada
     if (isPlaying) {
         updateTime = setInterval(() => { timeData(); }, 100);
+        updateSeeker = setInterval(() => { seekSliderMove() }, 1000);
 
         mediaPlayer.addEventListener('ended', () => {
             clearInterval(updateTime);
@@ -118,7 +124,10 @@ let playingNow = function() {
     }
 
     // stop => updateTime
-    btnPlay.addEventListener('click', () => clearInterval(updateTime));
+    btnPlay.addEventListener('click', () => {
+        clearInterval(updateTime);
+        clearInterval(updateSeeker)
+    });
 }
 
 /*======================================================
@@ -133,9 +142,23 @@ function loadFirstTrack(data) {
 }
 
 /*======================================================
+    MEDIA PLAYER: SEEK SLIDER
+======================================================*/
+//Ação: busca interativa na faixa
+let seekSlider = function() {
+    let seekValue = trackSeekerSlider.value;
+
+    if (mediaPlayer.src && mediaPlayer.readyState === 4) {
+        seekValue = mediaPlayer.duration * (seekValue / 100);
+        mediaPlayer.currentTime = seekValue;
+    }
+}
+trackSeekerSlider.addEventListener('change', seekSlider);
+
+/*======================================================
     MEDIA PLAYER: AÇÕES
 ======================================================*/
-//Ação: play_pause(
+//Ação: executar ou pausar faixa
 let play_pause = function() {
     if (mediaPlayer.src && mediaPlayer.readyState === 4 && !isPlaying && btnPlay.getAttribute('disabled') === null) {
         mediaPlayer.play();
@@ -153,12 +176,13 @@ let play_pause = function() {
 btnPlay.addEventListener('click', play_pause);
 
 
-//Ação: nextTrack()
+//Ação: avançar faixa
 let nextTrack = function() {
     ++actualTrack;
 
     checkNext();
     checkPrevious();
+    seekerSliderReset();
 
     if (actualTrack < playlistData[0].tracks.length) {
         mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
@@ -174,12 +198,13 @@ let nextTrack = function() {
 }
 btnNext.addEventListener('click', nextTrack);
 
-//Ação: previousTrack()
+//Ação: retroceder faixa
 let previousTrack = function() {
     --actualTrack;
 
     checkNext();
     checkPrevious();
+    seekerSliderReset();
 
     if (actualTrack <= playlistData[0].tracks.length) {
         mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
@@ -193,12 +218,6 @@ let previousTrack = function() {
     }
 }
 btnPrev.addEventListener('click', previousTrack);
-
-
-//Ação: goTo(time in sec)
-function goTo(time) {
-    mediaPlayer.currentTime = time;
-}
 
 /*======================================================
     MEDIA PLAYER: VERIFICAÇÕES
@@ -231,4 +250,11 @@ let checkPrevious = function() {
     } else {
         changeStateBtn(btnPrev, 'disabled');
     }
+}
+
+/*======================================================
+    MEDIA PLAYER: RESET
+======================================================*/
+let seekerSliderReset = function() {
+    trackSeekerSlider.value = 0;
 }
