@@ -35,7 +35,6 @@ let playlistData = null, //only dev
 
 /*======================================================
     MEDIA PLAYER: PEGAR DADOS E POPULAR FRONT
-    TODO: call in click event
 ======================================================*/
 //DATA: Pega os dados da playlist à executar
 (async function getPlaylistData(url) {
@@ -252,18 +251,20 @@ let playThisTrack = (target) => {
     let trackId = target.getAttribute('data-track');
 
     actualTrack = trackId;
+    isPlaying = false;
 
     checkNext();
     checkPrevious();
     seekerSliderReset();
 
-    mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
-
-    if (isPlaying) {
-        mediaPlayer.play();
+    if (actualTrack < playlistData[0].tracks.length) {
+        mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
+        playingNow();
     } else {
-        play_pause();
+        console.log(`fim da playlist ${playlistData[0].name}`);
     }
+
+    btnPlay.click();
 
     window.location.href = '#controls';
 }
