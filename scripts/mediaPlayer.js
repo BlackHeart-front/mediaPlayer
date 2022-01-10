@@ -8,7 +8,7 @@ const
     playlistName = document.querySelector('#playlist-name'),
     playlistDetails = document.querySelector('#playlist-details'),
     playlistContainer = document.querySelector('#playlist-container'),
-    playlistContainerBg = document.querySelector('#playlist-container-bg'),
+    mediaPlayerControlsContainer = document.querySelector('#mediaPlayer-controls'),
     trackPlayingNow = document.querySelector('#track-playingNow'),
     trackArtist = document.querySelector('#track-artist'),
     trackCurrentTime = document.querySelector('#track-currentTime'),
@@ -71,11 +71,14 @@ let loadPlaylistData = data => {
         for (let i = 0; i < data[0].tracks.length; i++) {
             if (trackList.childElementCount === 0) {
                 trackList
-                    .insertAdjacentHTML('beforeend', `<li><p>${i + 1}</p><div><p>${data[0].tracks[0].trackName}</p><p>${data[0].tracks[0].trackArtist}</p></div></li>`);
+                    .insertAdjacentHTML('beforeend', `<li data-track="${0}" onclick="playThisTrack(this);"><p>${i + 1}</p><div><p>${data[0].tracks[0].trackName}</p><p>${data[0].tracks[0].trackArtist}</p></div></li>`);
             } else {
                 trackList
-                    .insertAdjacentHTML('beforeend', `<li><p>${i + 1}</p><div><p>${data[0].tracks[i].trackName}</p><p>${data[0].tracks[i].trackArtist}</p></div></li>`);
+                    .insertAdjacentHTML('beforeend', `<li data-track="${i}" onclick="playThisTrack(this);"><p>${i + 1}</p><div><p>${data[0].tracks[i].trackName}</p><p>${data[0].tracks[i].trackArtist}</p></div></li>`);
             }
+        }
+        if (trackList.childElementCount === data[0].tracks.length) {
+            playingNow();
         }
     })();
 }
@@ -116,11 +119,15 @@ let playingNow = () => {
         mediaPlayer.addEventListener('ended', () => {
             clearInterval(updateTime);
             clearInterval(updateSeeker);
+            seekerSliderReset();
 
             isPlaying = false;
             btnPlay.classList.remove('icon-pause');
             btnPlay.classList.add('icon-play')
             btnPlay.firstChild.innerText = 'play';
+            mediaPlayerControlsContainer.classList.remove('animate-hue');
+            playlistName.classList.remove('animate-hue');
+            playlistBanner.classList.remove('animate-hue');
 
         });
     } else {
@@ -173,12 +180,15 @@ trackSeekerSlider.addEventListener('change', seekSlider);
 ======================================================*/
 //Ação: executar ou pausar faixa
 let play_pause = () => {
-    if (mediaPlayer.src && mediaPlayer.readyState === 4 && !isPlaying && btnPlay.getAttribute('disabled') === null) {
+    if (mediaPlayer.src && !isPlaying && btnPlay.getAttribute('disabled') === null) {
         mediaPlayer.play();
         isPlaying = true;
         btnPlay.classList.remove('icon-play');
         btnPlay.classList.add('icon-pause');
         btnPlay.firstChild.innerText = 'pause';
+        mediaPlayerControlsContainer.classList.add('animate-hue');
+        playlistName.classList.add('animate-hue');
+        playlistBanner.classList.add('animate-hue');
         playingNow();
     } else if (isPlaying) {
         mediaPlayer.pause();
@@ -186,6 +196,9 @@ let play_pause = () => {
         btnPlay.classList.remove('icon-pause');
         btnPlay.classList.add('icon-play')
         btnPlay.firstChild.innerText = 'play';
+        mediaPlayerControlsContainer.classList.remove('animate-hue');
+        playlistName.classList.remove('animate-hue');
+        playlistBanner.classList.remove('animate-hue');
     }
 }
 btnPlay.addEventListener('click', play_pause);
@@ -233,6 +246,27 @@ let previousTrack = () => {
     }
 }
 btnPrev.addEventListener('click', previousTrack);
+
+//Ação: clicar na faixa
+let playThisTrack = (target) => {
+    let trackId = target.getAttribute('data-track');
+
+    actualTrack = trackId;
+
+    checkNext();
+    checkPrevious();
+    seekerSliderReset();
+
+    mediaPlayer.src = playlistData[0].tracks[actualTrack].path;
+
+    if (isPlaying) {
+        mediaPlayer.play();
+    } else {
+        play_pause();
+    }
+
+    window.location.href = '#controls';
+}
 
 /*======================================================
     MEDIA PLAYER: VERIFICAÇÕES

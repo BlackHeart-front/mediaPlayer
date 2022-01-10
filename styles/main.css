@@ -279,7 +279,8 @@ body {
     display: flex;
 }
 
-.btn:hover {
+.btn:hover,
+#trackList>li {
     cursor: pointer;
 }
 
@@ -339,4 +340,26 @@ body {
 
 .hidden {
     visibility: hidden;
+}
+
+
+/* 
+    MEDIA PLAYER: ANIMAÇÂO
+---------------------------------------*/
+
+.animate-hue {
+    background-image: linear-gradient(45deg, var(--COLOR--pink-500), var(--COLOR--lemon-500));
+    animation: hue .7s infinite alternate;
+}
+
+@keyframes hue {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(90deg);
+    }
+    100% {
+        filter: hue-rotate(0deg);
+    }
 }
