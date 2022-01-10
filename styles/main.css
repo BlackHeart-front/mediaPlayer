@@ -16,7 +16,7 @@
     --COLOR--pink-600: #9b008b;
     --COLOR--green-500: #00ff8c;
     --COLOR--lemon-500: #b4ff00;
-    --SPACE--base: 1rem;
+    --SPACE--base: 16px;
     --FONTFAMILY--primary: 'Raleway', sans-serif;
 }
 
@@ -132,7 +132,7 @@ body {
 
 #playlist-name {
     margin-bottom: .75rem;
-    font-size: 5rem;
+    font-size: calc(var(--SPACE--base) + 350%);
     font-weight: 900;
     background: -webkit-linear-gradient(45deg, var(--COLOR--pink-500), var(--COLOR--lemon-500));
     -webkit-background-clip: text;
@@ -303,7 +303,7 @@ body {
 }
 
 .icon.lg {
-    font-size: calc(var(--SPACE--base) + 200%);
+    font-size: 3rem;
 }
 
 .icon.white {
